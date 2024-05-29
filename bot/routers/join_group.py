@@ -10,6 +10,5 @@ router = Router()
 @router.chat_member(ChatMemberUpdatedFilter(IS_NOT_MEMBER >> IS_MEMBER))
 async def on_user_join(event: ChatMemberUpdated):
     """ Событие присоединения в группу """
-    print(event)
-    
+
     await event_join_group(event)
