@@ -13,7 +13,6 @@ load_dotenv()
 
 class Settings(BaseSettings):
 
-    BOT_TIMEZONE: str = os.getenv("BOT_TIMEZONE").strip() or "Europe/Moscow"
     BOT_TOKEN: str = os.getenv("BOT_TOKEN").strip()
 
     FSM_REDIS_HOST: str = os.getenv("FSM_REDIS_HOST").strip()
@@ -27,8 +26,13 @@ class Settings(BaseSettings):
 
     ADMIN_IDS: list[int] = json.loads(os.getenv("ADMIN_IDS"))
 
-    FRUITS = {
-
+    FRUITS: dict = {
+        "🍌": "fruit_1",
+        "🍏": "fruit_2",
+        "🍎": "fruit_3",
+        "🍒": "fruit_4",
+        "🍓": "fruit_5",
+        "🍑": "fruit_6"
     }
 
     @property

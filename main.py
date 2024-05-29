@@ -1,16 +1,41 @@
-# This is a sample Python script.
+import sys
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from aiogram.client.default import DefaultBotProperties
+from aiogram.fsm.storage.redis import RedisStorage
+from aiogram import Dispatcher, Bot
+
+from bot.settings import settings
+from bot.routers import register_all_routers
+from bot import logging
+
+import asyncio
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+async def main():
+
+    storage = RedisStorage.from_url(settings.fsm_redis_url)
+
+    dp = Dispatcher(storage=storage)
+
+    bot = Bot(settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML", link_preview_is_disabled=True))
+
+    register_all_routers(dp)
 
 
-# Press the green button in the gutter to run the script.
+    await logging.setup()
+
+
+    try:
+
+        await dp.start_polling(bot)
+
+    except KeyboardInterrupt:
+        sys.exit(1)
+    finally:
+        await bot.session.close()
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    asyncio.run(main())
