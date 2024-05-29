@@ -22,7 +22,6 @@ async def main():
 
     register_all_routers(dp)
 
-
     await logging.setup()
 
 
