@@ -3,6 +3,8 @@ from aiogram.types import ChatPermissions
 
 from bot.service.redis_serv.user import get_answer, get_tries, inсr_tries
 
+from asyncio import sleep
+
 
 router = Router()
 
@@ -20,9 +22,15 @@ async def check_captcha(callback: types.CallbackQuery):
 
         text = f"""<a href='https://t.me/{callback.from_user.username}'>{callback.from_user.first_name}</a>, напишите администраторам для доступа к отправке сообщений."""
 
-        await callback.message.answer(
+        mes = await callback.message.answer(
             text=text
         )
+
+        await sleep(60)
+        try:
+            await mes.delete()
+        except:
+            pass
     else:
 
         await inсr_tries(user_id=callback.from_user.id)
