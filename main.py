@@ -21,7 +21,7 @@ async def main():
     bot = Bot(settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML", link_preview_is_disabled=True))
 
     register_all_routers(dp)
-
+    await bot.delete_webhook(drop_pending_updates=True)
     await logging.setup()
 
 

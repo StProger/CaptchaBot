@@ -1,5 +1,7 @@
 from aiogram import types
 
+from datetime import datetime, timedelta
+
 import random
 
 from aiogram.types import ChatPermissions
@@ -24,12 +26,13 @@ async def event_join_group(event: types.ChatMemberUpdated):
     await event.bot.restrict_chat_member(chat_id=event.chat.id,
                                          user_id=event.from_user.id,
                                          permissions=ChatPermissions())
+                                         #until_date=datetime.utcnow() + timedelta(days=10))
 
-    text = f"""<a href='https://t.me/{event.from_user.username}'>{event.from_user.first_name}</a>, нажми на {fruit}."""
+    text = f"""<a href='https://t.me/{event.from_user.username}'>{event.from_user.first_name}</a>, выбери {fruit}."""
 
     await event.answer(
         text=text,
-        reply_markup=captcha_key(fruits=fruits)
+        reply_markup=captcha_key(fruits)
     )
 
 

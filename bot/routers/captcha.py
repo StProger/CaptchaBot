@@ -8,7 +8,7 @@ router = Router()
 
 
 @router.callback_query(F.data.startswith("fruit_"))
-async def check_captha(callback: types.CallbackQuery):
+async def check_captcha(callback: types.CallbackQuery):
 
     right_answer = await get_answer(user_id=callback.from_user.id)
 
@@ -17,14 +17,11 @@ async def check_captha(callback: types.CallbackQuery):
     if right_answer == user_answer:
 
         await callback.message.delete()
-        await callback.bot.restrict_chat_member(
-            chat_id=callback.message.chat.id,
-            user_id=callback.from_user.id,
-            permissions=ChatPermissions(can_send_messages=True)
-        )
+
+        text = f"""<a href='https://t.me/{callback.from_user.username}'>{callback.from_user.first_name}</a>, напишите администраторам для доступа к отправке сообщений."""
+
         await callback.message.answer(
-            text=f"<a href='https://t.me/{callback.from_user.username}'>{callback.from_user.first_name}</a>, "
-                 f"добро пожаловать."
+            text=text
         )
     else:
 
