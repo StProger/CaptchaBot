@@ -20,17 +20,22 @@ async def check_captcha(callback: types.CallbackQuery):
 
         await callback.message.delete()
 
-        text = f"""<a href='https://t.me/{callback.from_user.username}'>{callback.from_user.first_name}</a>, напишите администраторам для доступа к отправке сообщений."""
-
-        mes = await callback.message.answer(
-            text=text
+        # text = f"""<a href='https://t.me/{callback.from_user.username}'>{callback.from_user.first_name}</a>, напишите администраторам для доступа к отправке сообщений."""
+        #
+        # mes = await callback.message.answer(
+        #     text=text
+        # )
+        await callback.bot.restrict_chat_member(
+            chat_id=callback.message.chat.id,
+            user_id=callback.from_user.id,
+            permissions=ChatPermissions(can_send_messages=True,
+                                        can_send_voice_notes=True),
         )
-
-        await sleep(60)
-        try:
-            await mes.delete()
-        except:
-            pass
+        # await sleep(60)
+        # try:
+        #     await mes.delete()
+        # except:
+        #     pass
     else:
 
         await inсr_tries(user_id=callback.from_user.id)
