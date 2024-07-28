@@ -22,9 +22,9 @@ async def check_captcha(callback: types.CallbackQuery):
     redis_message_id = await get_message_id(callback.from_user.id)
     print(redis_message_id)
 
-    # if message_id != redis_message_id:
-    #     await callback.answer()
-    #     return
+    if message_id != int(redis_message_id):
+        await callback.answer()
+        return
 
     if right_answer == user_answer:
 
