@@ -1,7 +1,7 @@
 from aiogram import types, Router, F
 from aiogram.types import ChatPermissions
 
-from bot.service.redis_serv.user import get_answer, get_tries, inсr_tries
+from bot.service.redis_serv.user import get_answer, get_tries, inсr_tries, get_message_id
 
 from asyncio import sleep
 
@@ -15,6 +15,14 @@ async def check_captcha(callback: types.CallbackQuery):
     right_answer = await get_answer(user_id=callback.from_user.id)
 
     user_answer = callback.data
+
+    message_id = callback.message.message_id
+
+    redis_message_id = await get_message_id(callback.from_user.id)
+
+    if message_id != redis_message_id:
+        await callback.answer()
+        return
 
     if right_answer == user_answer:
 

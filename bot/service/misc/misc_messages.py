@@ -8,7 +8,7 @@ from aiogram.types import ChatPermissions
 
 from bot.settings import settings
 
-from bot.service.redis_serv.user import set_tries, set_answer
+from bot.service.redis_serv.user import set_tries, set_answer, set_message_id
 from bot.keyboards.inline import captcha_key
 
 
@@ -30,9 +30,10 @@ async def event_join_group(event: types.ChatMemberUpdated):
 
     text = f"""<a href='https://t.me/{event.from_user.username}'>{event.from_user.first_name}</a>, выбери {fruit}."""
 
-    await event.answer(
+    mes = await event.answer(
         text=text,
         reply_markup=captcha_key(fruits)
     )
+    await set_message_id(event.from_user.id, mes.message_id)
 
 

@@ -24,6 +24,14 @@ async def get_tries(user_id: int) -> int:
 
     return await redis_pool.get(f"{user_id}:tries")
 
+async def set_message_id(user_id: int, message_id: int):
+
+    await redis_pool.set(f"{user_id}:msg:id", message_id)
+
+async def get_message_id(user_id: int) -> int:
+
+    return (await redis_pool.get(f"{user_id}:msg:id"))
+
 async def set_answer(user_id: int, answer: str) -> None:
 
     await redis_pool.set(f"{user_id}:answer", answer)
